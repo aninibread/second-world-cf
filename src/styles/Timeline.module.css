@@ -1,0 +1,59 @@
+.timelineContainer {
+    position: relative;
+    max-width: 600px; /* Adjust to your preference */
+    margin: auto;
+  }
+  
+  .timelineItem {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  .timelineItem:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .timelineDot {
+    position: absolute;
+    left: -30px; /* Adjust according to the line width */
+    top: 20px;
+    height: 15px;
+    width: 15px;
+    background-color: #333;
+    border-radius: 50%;
+    border: 3px solid #fff; /* To create space between the dot and the line */
+  }
+  
+  .timelineContent {
+    padding: 10px 0;
+  }
+  
+  .timelineContainer::before {
+    content: '';
+    position: absolute;
+    left: -15px; /* Center the line in the space left by the dot */
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #333;
+  }
+  
+  /* You can add media queries for responsiveness */
+  @media (max-width: 768px) {
+    .timelineContainer {
+      padding-left: 30px; /* Give enough space for the dot */
+    }
+    .timelineDot {
+      left: 0; /* Adjust the dot to align with the new line position */
+    }
+    .timelineContainer::before {
+      left: 0; /* Center the line in the space left by the dot */
+    }
+  }
+  

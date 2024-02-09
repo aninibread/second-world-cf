@@ -1,0 +1,45 @@
+.emailCopyContainer {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .speechBubble {
+    position: absolute;
+    left: calc(100% + 10px); /* Position to the right of the email, with some space */
+    top: 50%;
+    transform: translateY(-60%); /* Move up from the center */
+    background-color: white;
+    border: 1px solid black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    white-space: nowrap; /* Prevents text from wrapping */
+  }
+  
+  .speechBubble::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -5px; /* Position the arrow on the left side of the bubble */
+    border-style: solid;
+    border-width: 5px 5px 5px 0; /* Create arrow shape */
+    border-color: transparent white transparent transparent; /* Arrow is white */
+    transform: translateY(-50%); /* Keep arrow centered */
+    z-index: 1;
+  }
+  
+  .speechBubble::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -6px; /* Position the arrow border just behind the arrow */
+    border-style: solid;
+    border-width: 6px 6px 6px 0; /* Create border for arrow, slightly larger than the arrow itself */
+    border-color: transparent black transparent transparent; /* Border is black */
+    transform: translateY(-50%); /* Keep arrow outline centered */
+    z-index: 0;
+  }
+  

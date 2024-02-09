@@ -1,0 +1,37 @@
+.listItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Adjust the gap between the image and the details */
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+
+.listImage {
+  width: 100px; /* Adjust the image size as needed */
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.listDetails {
+  flex-grow: 1;
+}
+
+.listTitle {
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.listPosition {
+  font-size: 1rem;
+  color: #666;
+}
+
+.listDate {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.listDescripText {
+  font-size: 0.9rem;
+}
