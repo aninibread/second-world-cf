@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import galleryStyles from '../styles/galleryStyles.module.css';
 import { useState, useEffect } from 'react';
-import {fetchCatMedia} from '../lib/fetchCatMedia';
+import { fetchCatImageKeys } from '../lib/fetchCatMedia';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 
@@ -17,14 +17,18 @@ import Footer from '../components/footer';
       .join(' ');
 };
 
+const getImageHostUrl = (imageKey) => {
+  return `${process.env.NEXT_PUBLIC_IMAGE_HOST}/${imageKey}`
+};
+
 export default function Cat() {
-    const [catMedia, setCatMedia] = useState([]);
+    const [catImageKeys, setCatImageKeys] = useState([]);
 
     useEffect(() => {
         const loadMedia = async () => {
-        const media = await fetchCatMedia();
-        setCatMedia(media);
-        console.log('Media URLs set in state:', media);
+          const imageKeys = await fetchCatImageKeys();
+          setCatImageKeys(imageKeys);
+          console.log('Media URLs set in state:', imageKeys);
         };
 
         loadMedia();
@@ -42,22 +46,18 @@ export default function Cat() {
       <p>This is my kitty cat. Her name is Jiajia and she is turning 3 y/o (2024). Her name Jiajia or 佳佳 is a common Chinese name character that shares the same sound with the word 家 meaning 'Home'. </p>
       <br/>
         <div className={galleryStyles.masonryGrid}>
-            {catMedia.map((media, index) => (
+            {catImageKeys && catImageKeys.map((imageKey, index) => (
                 <div key={index} className={galleryStyles.masonryGridItem}>
                     <figure>
-                    {media.type === 'image' && (
-                        <>
-                        <img src={media.url} alt={formatTitle(media.url)} className="w-full h-auto rounded-lg shadow-lg" />
-                        </>
-                    )}
-                    {media.type === 'video' && (
+                        <img src={getImageHostUrl(imageKey)} alt={formatTitle(imageKey)} className="w-full h-auto rounded-lg shadow-lg" />
+                    {/* {media.type === 'video' && (
                         <>
                         <video autoPlay loop muted className="w-full h-auto rounded-lg shadow-lg">
                             <source src={media.url} type="video/mp4" />
                             Your browser does not support the video tag.
                         </video>
                         </>
-                    )}
+                    )} */}
                     </figure>
                 </div>
             ))}
