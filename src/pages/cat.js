@@ -50,14 +50,6 @@ export default function Cat() {
                 <div key={index} className={galleryStyles.masonryGridItem}>
                     <figure>
                         <img src={getImageHostUrl(imageKey)} alt={formatTitle(imageKey)} className="w-full h-auto rounded-lg shadow-lg" />
-                    {/* {media.type === 'video' && (
-                        <>
-                        <video autoPlay loop muted className="w-full h-auto rounded-lg shadow-lg">
-                            <source src={media.url} type="video/mp4" />
-                            Your browser does not support the video tag.
-                        </video>
-                        </>
-                    )} */}
                     </figure>
                 </div>
             ))}

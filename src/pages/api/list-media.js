@@ -17,7 +17,6 @@ async function getCatImageKeys() {
 
 }
 
-
 export default async function GET() {
 	return Response.json({ imageKeys: await getCatImageKeys() });
 }
