@@ -57,7 +57,7 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           <div className="md:col-span-2">
             <p className="bio-text text-lg mb-2">
-              currently, <span className="sparkly-text">product @ cloudflare</span> working on <a className="sparkly-text-sml" href='https://workers.cloudflare.com/' target="_blank">workers & pages</a>. uwaterloo biomed eng alumni. feel free to reach out anytime for anything →
+              currently, <span className="sparkly-text">product @ cloudflare</span> working on <a className="sparkly-text-sml" href='https://workers.cloudflare.com/' target="_blank">workers & pages</a>. uwaterloo '24 biomed eng alumni. feel free to reach out anytime for anything →
             </p>
           </div>
           <div className="md:col-span-1">
@@ -88,17 +88,20 @@ export default function Home() {
         <div>
           <ResumeList experiences={workExperiences} />
         </div>
-
+        
         <h2 className="intro-header text-2xl my-6">research exp</h2>
           {researchExperiences.map((experience, index) => (
             <ResumeItem key={index} {...experience} />
           ))}
+
+        
         <h2 className="intro-header text-2xl my-6">community service</h2>
         <div className="cardsGrid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
           {volunteeringExperiences.map((experience, index) => (
             <VolCard key={index} {...experience} />
           ))}
         </div>
+        
         <div className="bounce-link-container">
           <a href="/writing" className="bounce-link">see next: my writing! 🖋️</a>
         </div>
