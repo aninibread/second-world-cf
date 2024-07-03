@@ -1,5 +1,5 @@
 ---
-title: 'my grips with 3body 🌌'
+title: 'my gripes with 3body 🌌'
 date: '2024-01-04'
 summary: 'My critic of the acclaimed sci-fi series The Three Body Problem. 🟠 🟠 🟠'
 tags: ['book']
