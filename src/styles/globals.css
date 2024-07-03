@@ -60,6 +60,10 @@ a:hover {
   position: relative;
   color: #064f39; /* Dark forest green */
 }
+.sparkly-text-sml {
+  position: relative;
+  color: #064f39; /* Dark forest green */
+}
 
 .bounce-link-container {
   text-align: center;

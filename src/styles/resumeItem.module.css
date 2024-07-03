@@ -2,29 +2,40 @@
 
 .resumeItem {
     padding: 5px;
+    
 }
+
+.positionContainer {
+    display: flex;
+    flex-direction: column;
+  }
   
 .companyName {
     font-size: 1.25em;
     color: #333;
     margin-bottom: 2px;
 }
+
+.date1, .date2{
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 2px; 
+    font-style:italic;
+}
   
 .positionName1 {
     font-size: 1em;
-    color: #666;
     margin-bottom: 2px;
 }
 
 .positionName2 {
     font-size: 1em;
-    color: #666;
     margin-top: 10px;
     margin-bottom: 2px;
 }
   
 .teamName {
-    font-size: 0.9em;
+    font-size: 1em;
     color: #666;
 }
 

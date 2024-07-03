@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google'
 import Head from 'next/head'
 import ProjectCard from '../components/project_cards';
 import ResumeItem from '../components/resumeItem';
+import ResumeList from '../components/resumeList';
 import VolCard from '../components/volCards';
 import {Projects} from '../data/card_preview';
 import {workExperiences} from '../data/work_experience';
@@ -56,7 +57,7 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           <div className="md:col-span-2">
             <p className="bio-text text-lg mb-2">
-              <span className="sparkly-text">uWaterloo biomed eng</span> student trying to figure things out. what's on my mind: HCI, neuroscience, law, philosophy, and crafting.
+              currently, <span className="sparkly-text">product @ cloudflare</span> working on <a className="sparkly-text-sml" href='https://workers.cloudflare.com/' target="_blank">workers & pages</a>. uwaterloo biomed eng alumni. feel free to reach out anytime for anything →
             </p>
           </div>
           <div className="md:col-span-1">
@@ -75,19 +76,19 @@ export default function Home() {
             <p className="mb-2">👾 <a href="https://github.com/aninibread" target="_blank">github.com/aninibread</a></p>
           </div>
         </div>
+        
         <h2 className="intro-header text-2xl my-6">some projects</h2>
         <div className="cardsGrid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Projects.map((project, index) => (
             <ProjectCard key={index} {...project} />
           ))}
         </div>
-        <h2 className="intro-header text-2xl my-6">work exp</h2>
-        <p className="mb-4">Explored areas such as fintech, b2b, b2c, and iaas. worked in various company sized from 3 to 100k employees: </p>
+
+        <h2 className="intro-header text-2xl my-6">work exps</h2>
         <div>
-          {workExperiences.map((experience, index) => (
-            <ResumeItem key={index} {...experience} />
-          ))}
+          <ResumeList experiences={workExperiences} />
         </div>
+
         <h2 className="intro-header text-2xl my-6">research exp</h2>
           {researchExperiences.map((experience, index) => (
             <ResumeItem key={index} {...experience} />

@@ -49,14 +49,16 @@ export default function Cat() {
               {catImageKeys && catImageKeys.map((imageKey, index) => (
                 <div key={index} className={galleryStyles.masonryGridItem}>
                     <figure>
-                      {imageKey.endsWith("mp4") ? (
+                      <a href={getImageHostUrl(imageKey)} target="_blank" rel="noopener noreferrer">
+                        {imageKey.endsWith("mp4") ? (
                           <video autoPlay loop muted className="w-full h-auto rounded-lg shadow-lg">
-                              <source src={getImageHostUrl(imageKey)} type="video/mp4" />
-                              Your browser does not support the video tag.
+                            <source src={getImageHostUrl(imageKey)} type="video/mp4" />
+                            Your browser does not support the video tag.
                           </video>
-                      ):
-                        <img src={getImageHostUrl(imageKey)} alt={formatTitle(imageKey)} className="w-full h-auto rounded-lg shadow-lg" />
-                      }
+                        ) : (
+                          <img src={getImageHostUrl(imageKey)} alt={formatTitle(imageKey)} className="w-full h-auto rounded-lg shadow-lg" />
+                        )}
+                      </a>
                     </figure>
                 </div>
             ))}
