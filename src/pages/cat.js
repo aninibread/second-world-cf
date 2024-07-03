@@ -49,7 +49,7 @@ export default function Cat() {
               {catImageKeys && catImageKeys.map((imageKey, index) => (
                 <div key={index} className={galleryStyles.masonryGridItem}>
                     <figure>
-                      <a href={getImageHostUrl(imageKey)} target="_blank" rel="noopener noreferrer">
+
                         {imageKey.endsWith("mp4") ? (
                           <video autoPlay loop muted className="w-full h-auto rounded-lg shadow-lg">
                             <source src={getImageHostUrl(imageKey)} type="video/mp4" />
@@ -58,7 +58,7 @@ export default function Cat() {
                         ) : (
                           <img src={getImageHostUrl(imageKey)} alt={formatTitle(imageKey)} className="w-full h-auto rounded-lg shadow-lg" />
                         )}
-                      </a>
+
                     </figure>
                 </div>
             ))}

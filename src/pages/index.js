@@ -27,23 +27,7 @@ export default function Home() {
     navigator.clipboard.writeText('anniwang44@gmail.com');
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
-  };
-
-  useEffect(() => {
-      // Only run this code on the client side
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = 'https://embed.tawk.to/6465234174285f0ec46c1008/1h0lh3elo';
-      script.charset = 'UTF-8';
-      script.setAttribute('crossorigin', '*');
-      
-      document.body.appendChild(script);
-  
-      // Optional: Clean up script when component unmounts
-      return () => {
-        document.body.removeChild(script);
-      };
-    }, []);
+  };[];
 
   return (
     <div className="flex flex-col min-h-screen pt-10">
@@ -84,7 +68,7 @@ export default function Home() {
           ))}
         </div>
 
-        <h2 className="intro-header text-2xl my-6">work exps</h2>
+        <h2 className="intro-header text-2xl my-6">work exp</h2>
         <div>
           <ResumeList experiences={workExperiences} />
         </div>

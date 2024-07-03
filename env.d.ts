@@ -1,3 +1,4 @@
+import { KVNamespace } from "@cloudflare/workers-types/experimental";
 
 
 
@@ -11,6 +12,7 @@ declare global {
         // it to your `tsconfig.json` file under
         // `compilerOptions.types`.
         CAT_R2_BUCKET: R2Bucket;
+        MESSAGES: KVNamespace;
       }
     }
   }
