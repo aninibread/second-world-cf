@@ -4,10 +4,10 @@ import ProjectCard from '../components/project_cards';
 import ResumeItem from '../components/resumeItem';
 import ResumeList from '../components/resumeList';
 import VolCard from '../components/volCards';
-import {Projects} from '../data/card_preview';
-import {workExperiences} from '../data/work_experience';
-import {researchExperiences} from '../data/research_experience';
-import {volunteeringExperiences} from '../data/vol_experience';
+import { Projects } from '../data/card_preview';
+import { workExperiences } from '../data/work_experience';
+import { researchExperiences } from '../data/research_experience';
+import { volunteeringExperiences } from '../data/vol_experience';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 import React, { useState, useEffect } from 'react';
@@ -37,60 +37,60 @@ export default function Home() {
       </Head>
       <Navbar />
       <main className="flex-grow w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl lg:text-5xl mb-5 my-4">👋 hiyo, it's anni (w/o the e)</h1>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-          <div className="md:col-span-2">
-            <p className="bio-text text-lg mb-2">
-              currently, <span className="sparkly-text">product @ cloudflare</span> working on <a className="sparkly-text-sml" href='https://workers.cloudflare.com/' target="_blank">workers & pages</a>. uwaterloo '24 biomed eng alumni. feel free to reach out anytime for anything →
-            </p>
-          </div>
-          <div className="md:col-span-1">
-            <h3 className="mb-2">contacts</h3>
-            <div className={EmailCopyStyle.emailCopyContainer} onClick={copyEmailToClipboard}>
-              <p className="mb-2">📧 <a>anniwang44@gmail.com</a></p>
-                {isCopied && (
-                  <div className={EmailCopyStyle.speechBubble}>
-                    Copied!
-                    <div className={EmailCopyStyle.speechBubbleArrowOutline}></div>
-                    <div className={EmailCopyStyle.speechBubbleArrow}></div>
-                  </div>
-                )}
+        <h1 className="text-4xl lg:text-5xl mb-5 my-4"> 👋 hiyo, it's anni (w/o the e) </h1>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+              <div className="md:col-span-2">
+                <p className="bio-text text-lg mb-2">
+                  currently, <span className="sparkly-text">product @ cloudflare</span> working on <a className="sparkly-text-sml" href='https://workers.cloudflare.com/' target="_blank">workers & pages</a>. uwaterloo '24 biomed eng alumni. feel free to reach out anytime for anything →
+                </p>
+              </div>
+              <div className="md:col-span-1">
+                <h3 className="mb-2">contacts</h3>
+                <div className={EmailCopyStyle.emailCopyContainer} onClick={copyEmailToClipboard}>
+                  <p className="mb-2">📧 <a>anniwang44@gmail.com</a></p>
+                  {isCopied && (
+                    <div className={EmailCopyStyle.speechBubble}>
+                      Copied!
+                      <div className={EmailCopyStyle.speechBubbleArrowOutline}></div>
+                      <div className={EmailCopyStyle.speechBubbleArrow}></div>
+                    </div>
+                  )}
+                </div>
+                <p className="mb-2">👔 <a href="https://linkedin.com/in/a248wang" target="_blank">linkedin.com/in/a248wang</a></p>
+                <p className="mb-2">👾 <a href="https://github.com/aninibread" target="_blank">github.com/aninibread</a></p>
+              </div>
             </div>
-            <p className="mb-2">👔 <a href="https://linkedin.com/in/a248wang" target="_blank">linkedin.com/in/a248wang</a></p>
-            <p className="mb-2">👾 <a href="https://github.com/aninibread" target="_blank">github.com/aninibread</a></p>
-          </div>
-        </div>
-        
-        <h2 className="intro-header text-2xl my-6">some projects</h2>
-        <div className="cardsGrid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Projects.map((project, index) => (
-            <ProjectCard key={index} {...project} />
-          ))}
-        </div>
 
-        <h2 className="intro-header text-2xl my-6">work exp</h2>
-        <div>
-          <ResumeList experiences={workExperiences} />
-        </div>
-        
-        <h2 className="intro-header text-2xl my-6">research exp</h2>
-          {researchExperiences.map((experience, index) => (
-            <ResumeItem key={index} {...experience} />
-          ))}
+            <h2 className="intro-header text-2xl my-6">some projects</h2>
+            <div className="cardsGrid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Projects.map((project, index) => (
+                <ProjectCard key={index} {...project} />
+              ))}
+            </div>
 
-        
-        <h2 className="intro-header text-2xl my-6">community service</h2>
-        <div className="cardsGrid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-          {volunteeringExperiences.map((experience, index) => (
-            <VolCard key={index} {...experience} />
-          ))}
+            <h2 className="intro-header text-2xl my-6">work exp</h2>
+            <div>
+              <ResumeList experiences={workExperiences} />
+            </div>
+
+            <h2 className="intro-header text-2xl my-6">research exp</h2>
+            {researchExperiences.map((experience, index) => (
+              <ResumeItem key={index} {...experience} />
+            ))}
+
+
+            <h2 className="intro-header text-2xl my-6">community service</h2>
+            <div className="cardsGrid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+              {volunteeringExperiences.map((experience, index) => (
+                <VolCard key={index} {...experience} />
+              ))}
+            </div>
+
+            <div className="bounce-link-container">
+              <a href="/writing" className="bounce-link">see next: my writing! 🖋️</a>
+            </div>
+          </main>
+          <Footer />
         </div>
-        
-        <div className="bounce-link-container">
-          <a href="/writing" className="bounce-link">see next: my writing! 🖋️</a>
-        </div>
-      </main>
-      <Footer />
-    </div>
-  )
+        )
 }

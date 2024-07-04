@@ -51,8 +51,8 @@ export default function Cat() {
                     <figure>
 
                         {imageKey.endsWith("mp4") ? (
-                          <video autoPlay loop muted className="w-full h-auto rounded-lg shadow-lg">
-                            <source src={getImageHostUrl(imageKey)} type="video/mp4" />
+                          <video autoPlay loop muted className="w-full h-auto rounded-lg shadow-lg ">
+                            <source src={getImageHostUrl(imageKey)} type="video/mp4 " />
                             Your browser does not support the video tag.
                           </video>
                         ) : (
