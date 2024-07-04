@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
+export const runtime = 'edge';
 let messages = [];
 
 export default async function handler(req, res) {
