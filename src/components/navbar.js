@@ -11,6 +11,7 @@ const Navbar = () => {
         <Link href="/" title="info">info</Link>
         <Link href="/writing" title="writing">writing</Link>
         <Link href="/cat" title="cat">cat</Link>
+        <Link href="/message-board" title="messages">board</Link>
       </nav>
     </header>
   );

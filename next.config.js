@@ -18,7 +18,12 @@ if (process.env.NODE_ENV === 'development') {
 				type: 'r2',
 				bucketName: 'cat-media',
 			},
+			MESSAGES: {
+				type: 'kv_namespace',
+				namespace_id: process.env.MESSAGES,
+			},
 		},
+		
 	});
 }
 
