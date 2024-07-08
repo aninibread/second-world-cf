@@ -10,65 +10,56 @@ const MessageBoard = () => {
   const [editingMessageId, setEditingMessageId] = useState(null);
 
   useEffect(() => {
-    async function fetchMessages() {
-      try {
-        const response = await fetch('/api/messages');
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.indexOf('application/json') !== -1) {
-          const data = await response.json();
-          // Sort messages by timestamp in descending order
-          const sortedMessages = data.messages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-          setMessages(sortedMessages);
-        } else {
-          console.error('Error: Received non-JSON response:', response);
-        }
-      } catch (error) {
-        console.error('Error fetching messages:', error);
-      }
-    }
-
     fetchMessages();
   }, []);
 
+  const fetchMessages = async () => {
+    try {
+      const response = await fetch('https://messageboard-anniwang.anniwang44.workers.dev/');
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.indexOf('application/json') !== -1) {
+        const data = await response.json();
+        if (data.messages) {
+          const sortedMessages = data.messages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+          setMessages(sortedMessages);
+        } else {
+          console.error('Error: Messages property is missing in response data:', data);
+        }
+      } else {
+        console.error('Error: Received non-JSON response:', response);
+      }
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (editingMessageId) {
-      // Editing an existing message
-      try {
-        await fetch('/api/messages', {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: editingMessageId, name: userName, text: newMessage }),
-        });
-        setNewMessage('');
-        setUserName('');
-        setEditingMessageId(null);
-        // Refresh messages
-        const response = await fetch('/api/messages');
-        const data = await response.json();
-        const sortedMessages = data.messages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-        setMessages(sortedMessages);
-      } catch (error) {
-        console.error('Error updating message:', error);
-      }
-    } else {
-      // Posting a new message
-      try {
-        await fetch('/api/messages', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: userName, text: newMessage }),
-        });
-        setNewMessage('');
-        setUserName('');
-        // Refresh messages
-        const response = await fetch('/api/messages');
-        const data = await response.json();
-        const sortedMessages = data.messages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-        setMessages(sortedMessages);
-      } catch (error) {
-        console.error('Error posting message:', error);
-      }
+    const url = `https://messageboard-anniwang.anniwang44.workers.dev/`;
+    const payload = {
+      messages: [
+        {
+          id: editingMessageId || new Date().toISOString(),
+          name: userName,
+          text: newMessage,
+          timestamp: new Date().toISOString()
+        }
+      ]
+    };
+    const method = 'PUT';
+
+    try {
+      await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      setNewMessage('');
+      setUserName('');
+      setEditingMessageId(null);
+      fetchMessages(); // Refresh messages
+    } catch (error) {
+      console.error(`Error ${editingMessageId ? 'updating' : 'posting'} message:`, error);
     }
   };
 

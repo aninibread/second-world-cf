@@ -8,9 +8,6 @@ function uuidv4() {
   });
 }
 
-// Simulated messages storage (you'll need to replace this with KV or Durable Objects for persistent storage)
-let messages = [];
-
 export default async function handler(req) {
   const { method } = req;
 
@@ -18,17 +15,22 @@ export default async function handler(req) {
     const { name, text } = await req.json();
     const timestamp = new Date().toISOString();
     const id = uuidv4();
-    messages.push({ id, name, text, timestamp });
+    const newMessage = { id, name, text, timestamp };
+    await MESSAGES.put(id, JSON.stringify(newMessage));
     return new Response(JSON.stringify({ message: 'Message saved' }), { status: 201, headers: { 'Content-Type': 'application/json' } });
   } else if (method === 'GET') {
-    return new Response(JSON.stringify({ messages }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    const messages = await MESSAGES.list();
+    const messageDetails = await Promise.all(messages.keys.map(async key => {
+      const message = await MESSAGES.get(key.name, 'json');
+      return message;
+    }));
+    return new Response(JSON.stringify({ messages: messageDetails }), { status: 200, headers: { 'Content-Type': 'application/json' } });
   } else if (method === 'PUT') {
     const { id, name, text } = await req.json();
-    const messageIndex = messages.findIndex((msg) => msg.id === id);
-    if (messageIndex !== -1) {
-      messages[messageIndex].name = name;
-      messages[messageIndex].text = text;
-      messages[messageIndex].timestamp = new Date().toISOString();
+    const message = await MESSAGES.get(id, 'json');
+    if (message) {
+      const updatedMessage = { id, name, text, timestamp: new Date().toISOString() };
+      await MESSAGES.put(id, JSON.stringify(updatedMessage));
       return new Response(JSON.stringify({ message: 'Message updated' }), { status: 200, headers: { 'Content-Type': 'application/json' } });
     } else {
       return new Response(JSON.stringify({ message: 'Message not found' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
