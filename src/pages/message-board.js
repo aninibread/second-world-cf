@@ -8,6 +8,7 @@ const MessageBoard = () => {
   const [newMessage, setNewMessage] = useState('');
   const [userName, setUserName] = useState('');
   const [editingMessageId, setEditingMessageId] = useState(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchMessages();
@@ -35,6 +36,11 @@ const MessageBoard = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (userName.trim().length < 1 || newMessage.trim().length < 1) {
+      setError('Both name and message must be at least 1 character long.');
+      return;
+    }
+
     const url = `https://messageboard-anniwang.anniwang44.workers.dev/`;
     const payload = {
       messages: [
@@ -57,6 +63,7 @@ const MessageBoard = () => {
       setNewMessage('');
       setUserName('');
       setEditingMessageId(null);
+      setError('');
       fetchMessages(); // Refresh messages
     } catch (error) {
       console.error(`Error ${editingMessageId ? 'updating' : 'posting'} message:`, error);
@@ -80,6 +87,7 @@ const MessageBoard = () => {
         <h1 className="text-4xl font-bold mb-6 my-4">message board 💬</h1>
         <p>Come say hi or leave a message!</p>
         <br/>
+        {error && <p className="text-red-500">{error}</p>}
         <form onSubmit={handleSubmit} className="mb-4 relative">
           <div className="relative">
             <input
@@ -108,17 +116,19 @@ const MessageBoard = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {messages.map((message, index) => (
             <div key={index} className="flex justify-start">
-              <div className="w-full rounded-lg bg-gray-100 p-3 shadow-md">
-                <div className="flex justify-between items-center">
-                  <strong>{message.name}</strong>
-                  <button
-                    onClick={() => handleEdit(message.id, message.name, message.text)}
-                    className="ml-2 px-2 py-1 bg-yellow-500 text-white rounded text-xs"
-                  >
-                    Edit
-                  </button>
+              <div className="w-full rounded-lg bg-gray-100 p-3 shadow-md flex flex-col justify-between">
+                <div>
+                  <div className="flex justify-between items-center">
+                    <strong>{message.name}</strong>
+                    <button
+                      onClick={() => handleEdit(message.id, message.name, message.text)}
+                      className="ml-2 px-2 py-1 bg-yellow-500 text-white rounded text-xs"
+                    >
+                      Edit
+                    </button>
+                  </div>
+                  <p className="mt-1">{message.text}</p>
                 </div>
-                <p className="mt-1">{message.text}</p>
                 <div className="text-right mt-2">
                   <small className="text-gray-500">{new Date(message.timestamp).toLocaleString()}</small>
                 </div>
