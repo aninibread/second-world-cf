@@ -10,12 +10,13 @@
 
 @media (max-width: 768px) {
     .masonry-grid {
-        column-count: 2;
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 500px) {
     .masonry-grid {
-        column-count: 1;
+        grid-template-columns: repeat(2, 1fr);
     }
 }
+  
