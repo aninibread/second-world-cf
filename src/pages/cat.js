@@ -48,16 +48,14 @@ export default function Cat() {
               {catImageKeys && catImageKeys.map((imageKey, index) => (
                 <div key={index} className={galleryStyles.masonryGridItem}>
                     <figure>
-
                         {imageKey.endsWith("mp4") ? (
-                          <video autoPlay loop muted playsInline className="w-full h-auto rounded-lg shadow-lg ">
-                            <source src={getImageHostUrl(imageKey)} type="video/mp4 " />
+                          <video autoPlay loop muted playsInline className="w-full h-auto rounded-lg shadow-lg">
+                            <source src={getImageHostUrl(imageKey)} type="video/mp4" />
                             Your browser does not support the video tag.
                           </video>
                         ) : (
                           <img src={getImageHostUrl(imageKey)} alt={formatTitle(imageKey)} className="w-full h-auto rounded-lg shadow-lg" />
                         )}
-
                     </figure>
                 </div>
             ))}

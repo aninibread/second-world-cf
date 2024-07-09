@@ -9,14 +9,13 @@
 }
 
 @media (max-width: 768px) {
-    .masonry-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .masonryGrid {
+        column-count: 2;
     }
 }
 
 @media (max-width: 500px) {
-    .masonry-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .masonryGrid {
+        column-count: 1;
     }
 }
-  
