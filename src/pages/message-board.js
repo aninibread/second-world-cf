@@ -42,29 +42,39 @@ const MessageBoard = () => {
     }
 
     const url = `https://messageboard-anniwang.anniwang44.workers.dev/`;
+    const message = {
+      id: editingMessageId || new Date().toISOString(),
+      name: userName,
+      text: newMessage,
+      timestamp: new Date().toISOString()
+    };
     const payload = {
-      messages: [
-        {
-          id: editingMessageId || new Date().toISOString(),
-          name: userName,
-          text: newMessage,
-          timestamp: new Date().toISOString()
-        }
-      ]
+      messages: [message]
     };
     const method = 'PUT';
 
     try {
-      await fetch(url, {
+      const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
+      if (response.status === 403) {
+        setError('You are not authorized to edit this message.');
+        return;
+      }
       setNewMessage('');
       setUserName('');
       setEditingMessageId(null);
       setError('');
-      fetchMessages(); // Refresh messages
+
+      // Update messages state to include the new message
+      setMessages(prevMessages => {
+        const updatedMessages = editingMessageId
+          ? prevMessages.map(msg => (msg.id === message.id ? message : msg))
+          : [message, ...prevMessages];
+        return updatedMessages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      });
     } catch (error) {
       console.error(`Error ${editingMessageId ? 'updating' : 'posting'} message:`, error);
     }
