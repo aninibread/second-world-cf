@@ -41,6 +41,7 @@ const MessageBoard = () => {
     try {
       const response = await fetch('https://api64.ipify.org?format=json');
       const data = await response.json();
+      console.log("User IP:", data.ip); // Debugging log for IP
       setUserIp(data.ip);
     } catch (error) {
       console.error('Error fetching user IP:', error);
@@ -55,7 +56,7 @@ const MessageBoard = () => {
     }
 
     if (editingMessageId && userName === originalMessage.name && newMessage === originalMessage.text) {
-      setError('No change was made. Please click cancel to return to posting a message.');
+      setError('Nothing has been updated. Please click cancel to return to posting a message.');
       return;
     }
 
@@ -167,13 +168,15 @@ const MessageBoard = () => {
                 <div>
                   <div className="flex justify-between items-center">
                     <strong>{message.name}</strong>
-                    {message.ip === userIp && (
+                    {message.ip === userIp ? (
                       <button
                         onClick={() => handleEdit(message.id, message.name, message.text)}
                         className="ml-2 px-2 py-1 bg-yellow-500 text-white rounded text-xs"
                       >
                         Edit
                       </button>
+                    ) : (
+                      console.log("IP mismatch: message IP -", message.ip, "user IP -", userIp) // Debugging log for IP mismatch
                     )}
                   </div>
                   <p className="mt-1">{message.text}</p>
