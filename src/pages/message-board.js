@@ -56,7 +56,7 @@ const MessageBoard = () => {
     }
 
     if (editingMessageId && userName === originalMessage.name && newMessage === originalMessage.text) {
-      setError('Nothing has been updated. Please click cancel to return to posting a message.');
+      setError('Nothing has been updated. Click cancel to return to posting.');
       return;
     }
 
