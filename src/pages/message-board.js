@@ -9,9 +9,12 @@ const MessageBoard = () => {
   const [userName, setUserName] = useState('');
   const [editingMessageId, setEditingMessageId] = useState(null);
   const [error, setError] = useState('');
+  const [userIp, setUserIp] = useState('');
+  const [originalMessage, setOriginalMessage] = useState({ name: '', text: '' });
 
   useEffect(() => {
     fetchMessages();
+    fetchUserIp();
   }, []);
 
   const fetchMessages = async () => {
@@ -34,10 +37,25 @@ const MessageBoard = () => {
     }
   };
 
+  const fetchUserIp = async () => {
+    try {
+      const response = await fetch('https://api64.ipify.org?format=json');
+      const data = await response.json();
+      setUserIp(data.ip);
+    } catch (error) {
+      console.error('Error fetching user IP:', error);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (userName.trim().length < 1 || newMessage.trim().length < 1) {
       setError('Both name and message must be at least 1 character long.');
+      return;
+    }
+
+    if (editingMessageId && userName === originalMessage.name && newMessage === originalMessage.text) {
+      setError('No change was made. Please click cancel to return to posting a message.');
       return;
     }
 
@@ -46,7 +64,8 @@ const MessageBoard = () => {
       id: editingMessageId || new Date().toISOString(),
       name: userName,
       text: newMessage,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      ip: userIp // Include IP address when submitting the message
     };
     const payload = {
       messages: [message]
@@ -54,15 +73,11 @@ const MessageBoard = () => {
     const method = 'PUT';
 
     try {
-      const response = await fetch(url, {
+      await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      if (response.status === 403) {
-        setError('You are not authorized to edit this message.');
-        return;
-      }
       setNewMessage('');
       setUserName('');
       setEditingMessageId(null);
@@ -84,6 +99,14 @@ const MessageBoard = () => {
     setEditingMessageId(id);
     setUserName(name);
     setNewMessage(text);
+    setOriginalMessage({ name, text });
+  };
+
+  const handleCancel = () => {
+    setEditingMessageId(null);
+    setUserName('');
+    setNewMessage('');
+    setError('');
   };
 
   return (
@@ -119,9 +142,23 @@ const MessageBoard = () => {
             />
             <div className="absolute right-2 bottom-2 text-sm text-gray-500">{newMessage.length}/280</div>
           </div>
-          <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
-            {editingMessageId ? 'Update Message' : 'Post Message'}
-          </button>
+          <div className="flex items-center mt-2">
+            <button
+              type="submit"
+              className={`px-4 py-2 text-white rounded ${editingMessageId ? 'bg-green-700' : 'bg-blue-500'}`}
+            >
+              {editingMessageId ? 'Update Message' : 'Post Message'}
+            </button>
+            {editingMessageId && (
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="ml-4 text-blue-500 underline"
+              >
+                Cancel
+              </button>
+            )}
+          </div>
         </form>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {messages.map((message, index) => (
@@ -130,12 +167,14 @@ const MessageBoard = () => {
                 <div>
                   <div className="flex justify-between items-center">
                     <strong>{message.name}</strong>
-                    <button
-                      onClick={() => handleEdit(message.id, message.name, message.text)}
-                      className="ml-2 px-2 py-1 bg-yellow-500 text-white rounded text-xs"
-                    >
-                      Edit
-                    </button>
+                    {message.ip === userIp && (
+                      <button
+                        onClick={() => handleEdit(message.id, message.name, message.text)}
+                        className="ml-2 px-2 py-1 bg-yellow-500 text-white rounded text-xs"
+                      >
+                        Edit
+                      </button>
+                    )}
                   </div>
                   <p className="mt-1">{message.text}</p>
                 </div>
