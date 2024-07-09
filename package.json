@@ -15,6 +15,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.490.0",
     "@aws-sdk/s3-request-presigner": "^3.490.0",
+    "@headlessui/react": "^2.1.2",
     "axios": "^1.7.2",
     "gray-matter": "^4.0.3",
     "next": "14.0.4",

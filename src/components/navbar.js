@@ -1,11 +1,68 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
+import { Transition } from '@headlessui/react';
 
 const Navbar = () => {
+  const [isPopped, setIsPopped] = useState(false);
+  const [isGrownBack, setIsGrownBack] = useState(false);
+  const [isHolding, setIsHolding] = useState(false);
+  const spinRef = useRef(null);
+
+  const handleMouseDown = () => {
+    setIsHolding(true);
+  };
+
+  const handleMouseUp = () => {
+    if (spinRef.current) {
+      const currentRotation = window.getComputedStyle(spinRef.current).transform;
+      spinRef.current.style.transform = currentRotation;
+      spinRef.current.style.animation = 'none';
+    }
+    setIsHolding(false);
+    setIsPopped(true);
+    setTimeout(() => {
+      setIsPopped(false);
+      setIsGrownBack(true);
+      setTimeout(() => {
+        if (spinRef.current) {
+          spinRef.current.style.animation = '';
+        }
+        setIsGrownBack(false);
+      }, 600); // Duration of the grow-back effect
+    }, 400); // Duration of the popping effect
+  };
+
   return (
     <header className="flex w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 justify-between items-center py-6">
-      <div className="logo">
-        <img src="https://pub-4b3c8e02204249afb15ca13b88ec64ef.r2.dev/nav-logo.png" alt="Logo" className="h-12 w-12 spin " />
+      <div
+        className="relative w-12 h-12 logo"
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+      >
+        <Transition
+          show={!isPopped}
+          enter="transition-transform duration-500"
+          enterFrom="scale-0"
+          enterTo="scale-100"
+          leave="transition-opacity duration-400"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <img
+            ref={spinRef}
+            src="https://pub-4b3c8e02204249afb15ca13b88ec64ef.r2.dev/nav-logo.png"
+            alt="Logo"
+            className={`absolute inset-0 w-full h-full ${
+              isPopped
+                ? 'animate-pop'
+                : isGrownBack
+                ? 'animate-growBack'
+                : isHolding
+                ? 'animate-holdGrow'
+                : 'animate-spin'
+            }`}
+          />
+        </Transition>
       </div>
       <nav className="nav space-x-4">
         <Link href="/" title="info">info</Link>
