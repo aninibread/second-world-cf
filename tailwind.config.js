@@ -15,7 +15,6 @@ module.exports = {
         spin: 'spin 4s linear infinite',
         pop: 'pop 0.4s ease-out',
         growBack: 'growBack 0.6s ease-out',
-        holdGrow: 'holdGrow 0.4s ease-in-out',
       },
       keyframes: {
         spin: {
@@ -24,18 +23,13 @@ module.exports = {
         },
         pop: {
           '0%': { transform: 'scale(1)', opacity: 1 },
-          '50%': { transform: 'scale(1.7)', opacity: 1 },
-          '70%': { transform: 'scale(1.3)', opacity: 0.8 },
+          '50%': { transform: 'scale(1.3)', opacity: 0.9 },
           '100%': { transform: 'scale(0)', opacity: 0 },
         },
         growBack: {
           '0%': { transform: 'scale(0)', opacity: 0 },
           '60%': { transform: 'scale(1.2)', opacity: 1 },
           '100%': { transform: 'scale(1)', opacity: 1 },
-        },
-        holdGrow: {
-          '0%': { transform: 'scale(1)' },
-          '100%': { transform: 'scale(1.2)' },
         },
       },
     },

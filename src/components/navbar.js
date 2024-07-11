@@ -5,28 +5,18 @@ import { Transition } from '@headlessui/react';
 const Navbar = () => {
   const [isPopped, setIsPopped] = useState(false);
   const [isGrownBack, setIsGrownBack] = useState(false);
-  const [isHolding, setIsHolding] = useState(false);
   const spinRef = useRef(null);
 
   const handleMouseDown = () => {
-    setIsHolding(true);
+    // Remove the hold logic
   };
 
   const handleMouseUp = () => {
-    if (spinRef.current) {
-      const currentRotation = window.getComputedStyle(spinRef.current).transform;
-      spinRef.current.style.transform = currentRotation;
-      spinRef.current.style.animation = 'none';
-    }
-    setIsHolding(false);
     setIsPopped(true);
     setTimeout(() => {
       setIsPopped(false);
       setIsGrownBack(true);
       setTimeout(() => {
-        if (spinRef.current) {
-          spinRef.current.style.animation = '';
-        }
         setIsGrownBack(false);
       }, 600); // Duration of the grow-back effect
     }, 400); // Duration of the popping effect
@@ -57,8 +47,6 @@ const Navbar = () => {
                 ? 'animate-pop'
                 : isGrownBack
                 ? 'animate-growBack'
-                : isHolding
-                ? 'animate-holdGrow'
                 : 'animate-spin'
             }`}
           />
