@@ -60,7 +60,7 @@ const MessageBoard = () => {
       return;
     }
 
-    const url = `https://messageboard-anniwang.anniwang44.workers.dev/`;
+    const url = `https://messageboard-anniwang.anniwang.workers.dev/`;
     const message = {
       id: editingMessageId || new Date().toISOString(),
       name: userName,
