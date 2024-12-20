@@ -19,7 +19,7 @@ const MessageBoard = () => {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch('https://messageboard-anniwang.anniwang44.workers.dev/');
+      const response = await fetch('https://messageboard-anniwang.anniwang.workers.dev/');
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.indexOf('application/json') !== -1) {
         const data = await response.json();
