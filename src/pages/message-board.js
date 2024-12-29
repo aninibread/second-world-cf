@@ -119,7 +119,7 @@ const MessageBoard = () => {
       <Navbar />
       <main className="flex-grow w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-bold mb-6 my-4">message board 💬</h1>
-        <p>Come say hi or leave a message!</p>
+        <p>Come say hi or leave a message!!</p>
         <br/>
         {error && <p className="text-red-500">{error}</p>}
         <form onSubmit={handleSubmit} className="mb-4 relative">
