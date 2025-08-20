@@ -17,6 +17,8 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
+  overflow-y: auto !important; /* Force scrolling */
+  height: auto !important; /* Ensure body height is not fixed */
 }
 
 h1, h2, h3 {
