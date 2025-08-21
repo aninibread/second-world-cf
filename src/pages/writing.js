@@ -28,14 +28,15 @@ export default function Blog({ allPostsData, allProjectPostsData }) {
     const script = document.createElement('script');
     script.type = 'module';
     script.innerHTML = `
-      import { NLWebDropdownChat } from 'https://ask.anniwang.me/nlweb-dropdown-chat.js';
+      import { NLWebDropdownChat } from '/nlweb/nlweb-dropdown-chat.js';
       
       try {
         const chat = new NLWebDropdownChat({
           containerId: 'docs-search-container',
-          site: 'https://ask.anniwang.me/',
+          site: 'https://ask.anniwang.me',
           placeholder: 'Search for docs...',
-          endpoint: 'https://ask.anniwang.me/'
+          endpoint: '/nlweb',
+          apiEndpoint: 'https://ask.anniwang.me'
         });
       } catch (error) {
         console.error('Failed to initialize NLWeb chat:', error);
@@ -54,10 +55,11 @@ export default function Blog({ allPostsData, allProjectPostsData }) {
       <Head>
         <title>Anni Wang</title>
         <link rel="icon" href="https://pub-4b3c8e02204249afb15ca13b88ec64ef.r2.dev/nav-logo.png" />
+        <link rel="stylesheet" href="/nlweb/nlweb-dropdown-chat.css" />
       </Head>
       <Navbar />
-      <div id="docs-search-container"></div>
       <main className="flex-grow w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div id="docs-search-container" className="mb-6"></div>
         <h1 className="text-4xl font-bold mb-6 my-4">🖍️ random brain dumps 📄</h1>
         <div className="divide-y divide-gray-200">
           {allPostsData.map(({ id, date, title, summary, tags }) => (
