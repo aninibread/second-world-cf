@@ -1,5 +1,7 @@
 import Head from 'next/head';
+import Script from 'next/script';
 import Link from 'next/link';
+import { useEffect } from 'react';
 import { getSortedPostsData, getSortedProjectPostsData } from '../lib/posts';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
@@ -22,27 +24,30 @@ export default function Blog({ allPostsData, allProjectPostsData }) {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  useEffect(() => {
+    const initializeChat = async () => {
+      try {
+        const { NLWebDropdownChat } = await import('https://ask.anniwang.me/nlweb-dropdown-chat.js');
+        const chat = new NLWebDropdownChat({
+          containerId: 'docs-search-container',
+          site: 'https://ask.anniwang.me/',
+          placeholder: 'Search for docs...',
+          endpoint: 'https://ask.anniwang.me/'
+        });
+      } catch (error) {
+        console.error('Failed to initialize NLWeb chat:', error);
+      }
+    };
+    
+    initializeChat();
+  }, []);
+
 
   return (
     <div className="flex flex-col min-h-screen pt-10">
       <Head>
         <title>Anni Wang</title>
         <link rel="icon" href="https://pub-4b3c8e02204249afb15ca13b88ec64ef.r2.dev/nav-logo.png" />
-        <script 
-          type="module" 
-          dangerouslySetInnerHTML={{
-            __html: `
-              import { NLWebDropdownChat } from 'https://ask.anniwang.me/nlweb-dropdown-chat.js';
-              
-              const chat = new NLWebDropdownChat({
-                containerId: 'docs-search-container',
-                site: 'https://ask.anniwang.me/',
-                placeholder: 'Search for docs...',
-                endpoint: 'https://ask.anniwang.me/'
-              });
-            `
-          }}
-        />
       </Head>
       <Navbar />
       <div id="docs-search-container"></div>
