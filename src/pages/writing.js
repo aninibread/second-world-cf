@@ -25,9 +25,12 @@ export default function Blog({ allPostsData, allProjectPostsData }) {
   };
 
   useEffect(() => {
-    const initializeChat = async () => {
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.innerHTML = `
+      import { NLWebDropdownChat } from 'https://ask.anniwang.me/nlweb-dropdown-chat.js';
+      
       try {
-        const { NLWebDropdownChat } = await import('https://ask.anniwang.me/nlweb-dropdown-chat.js');
         const chat = new NLWebDropdownChat({
           containerId: 'docs-search-container',
           site: 'https://ask.anniwang.me/',
@@ -37,9 +40,12 @@ export default function Blog({ allPostsData, allProjectPostsData }) {
       } catch (error) {
         console.error('Failed to initialize NLWeb chat:', error);
       }
+    `;
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
     };
-    
-    initializeChat();
   }, []);
 
 
