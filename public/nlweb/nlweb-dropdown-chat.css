@@ -52,15 +52,15 @@
 .nlweb-dropdown-results {
     position: absolute;
     top: 100%;
-    left: 0;
-    right: 0;
+    left: -100px;
+    right: -100px;
     margin-top: 4px;
     background: white;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    height: 70vh;
-    max-height: 70vh;
+    height: 50vh;
+    max-height: 50vh;
     min-height: 300px;
     display: none;
     z-index: 1000;
@@ -103,6 +103,18 @@
 
 .nlweb-dropdown-conversations-panel.show .nlweb-dropdown-conversations-list {
     opacity: 1;
+}
+
+/* Ensure main content area maintains styling when conversations panel is open */
+.nlweb-dropdown-results:has(.nlweb-dropdown-conversations-panel.show) .nlweb-dropdown-messages-container,
+.nlweb-dropdown-results .nlweb-dropdown-messages-container {
+    background-color: white;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Alternative for browsers without :has() support */
+.nlweb-dropdown-messages-container {
+    background-color: white !important;
 }
 
 /* Conversations header */
@@ -274,6 +286,8 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    background-color: white;
+    z-index: 1;
 }
 
 /* Close button */

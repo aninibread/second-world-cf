@@ -36,7 +36,7 @@ export default function Blog({ allPostsData, allProjectPostsData }) {
           site: 'https://ask.anniwang.me',
           placeholder: 'Search for docs...',
           endpoint: '/nlweb',
-          apiEndpoint: 'https://ask.anniwang.me'
+          apiEndpoint: ''
         });
       } catch (error) {
         console.error('Failed to initialize NLWeb chat:', error);
