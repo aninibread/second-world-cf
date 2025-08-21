@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { getSortedPostsData, getSortedProjectPostsData } from '../lib/posts';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
-import { useEffect } from 'react';
 
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData();
@@ -23,51 +22,30 @@ export default function Blog({ allPostsData, allProjectPostsData }) {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Only load search bar in production to avoid CORS issues in development
-      if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-        console.log('Loading search bar for production...');
-        
-        const externalScript = document.createElement('script');
-        externalScript.type = 'module';
-        externalScript.innerHTML = `
-          import { NLWebDropdownChat } from 'https://flat-meadow-f7c7-nlweb.anniwang.workers.dev/nlweb-dropdown-chat.js';
-          
-          const chat = new NLWebDropdownChat({
-            containerId: 'docs-search-container',
-            site: window.location.origin,
-            placeholder: 'Search for docs...',
-            endpoint: 'https://flat-meadow-f7c7-nlweb.anniwang.workers.dev'
-          });
-        `;
-        
-        document.head.appendChild(externalScript);
-        
-        return () => {
-          if (document.head.contains(externalScript)) {
-            document.head.removeChild(externalScript);
-          }
-        };
-      } else {
-        console.log('Development mode - search bar will load in production');
-        // Show a placeholder in development
-        const container = document.getElementById('docs-search-container');
-        if (container) {
-          container.innerHTML = '<div style="padding: 10px; background: #f0f0f0; border-radius: 4px; text-align: center; color: #666; font-size: 14px;">🔍 Search bar will appear in production</div>';
-        }
-      }
-    }
-  }, []);
 
   return (
     <div className="flex flex-col min-h-screen pt-10">
       <Head>
         <title>Anni Wang</title>
         <link rel="icon" href="https://pub-4b3c8e02204249afb15ca13b88ec64ef.r2.dev/nav-logo.png" />
+        <script 
+          type="module" 
+          dangerouslySetInnerHTML={{
+            __html: `
+              import { NLWebDropdownChat } from 'https://ask.anniwang.me/nlweb-dropdown-chat.js';
+              
+              const chat = new NLWebDropdownChat({
+                containerId: 'docs-search-container',
+                site: 'https://ask.anniwang.me/',
+                placeholder: 'Search for docs...',
+                endpoint: 'https://ask.anniwang.me/'
+              });
+            `
+          }}
+        />
       </Head>
       <Navbar />
-      <div id="docs-search-container" style={{position: 'relative', zIndex: 1000, margin: '10px 0'}}></div>
+      <div id="docs-search-container"></div>
       <main className="flex-grow w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-bold mb-6 my-4">🖍️ random brain dumps 📄</h1>
         <div className="divide-y divide-gray-200">
