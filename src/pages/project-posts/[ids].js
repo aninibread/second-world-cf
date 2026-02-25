@@ -40,6 +40,7 @@ export default function ProjectPost({ postData }) {
     <div className="flex flex-col min-h-screen pt-10">
       <Head>
         <title>{postData.title}</title>
+        <meta name="title" content={postData.title} />
         <link rel="icon" href="/profile_favcon.jpeg" />
       </Head>
       <Navbar />

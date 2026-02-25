@@ -40,6 +40,7 @@ export default function Post({ postData }) {
     <div className="flex flex-col min-h-screen pt-10">
       <Head>
         <title>{postData.title}</title>
+        <meta name="title" content={postData.title} />
         <link rel="icon" href="https://pub-4b3c8e02204249afb15ca13b88ec64ef.r2.dev/nav-logo.png" />
       </Head>
       <Navbar />
