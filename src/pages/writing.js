@@ -97,7 +97,7 @@ export default function Blog({ allPostsData, allProjectPostsData }) {
           ))}
         </div>
         <div className="bounce-link-container">
-          <a href="/cat" className="bounce-link">Look at my cat 🐱</a>
+          <a href="/cat" className="bounce-link">Check out at my cat 🐱</a>
         </div>
       </main>
       <Footer />

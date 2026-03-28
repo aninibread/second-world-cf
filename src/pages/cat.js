@@ -43,7 +43,7 @@ export default function Cat() {
       <Navbar />
       <main className="flex-grow w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <h1 className="text-4xl font-bold mb-6">🐱 cat gallery</h1>
-      <p>This is my kitty cat. Her name is Jiajia and she is turning 3 y/o (2024). Her name Jiajia or 佳佳 is a common Chinese name character that shares the same sound with the word 家 meaning 'Home'. </p>
+      <p>This is my kitty. Her name is Jiajia and she is turning 3 y/o (2024). Her name Jiajia or 佳佳 is a common Chinese name character that shares the same sound with the word 家 meaning 'Home'. </p>
       <br/>
         <div className={galleryStyles.masonryGrid}>
               {catImageKeys && catImageKeys.map((imageKey, index) => (
