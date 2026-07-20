@@ -41,7 +41,7 @@ export default function Cat() {
         <link rel="icon" href="https://pub-4b3c8e02204249afb15ca13b88ec64ef.r2.dev/nav-logo.png" />
       </Head>
       <Navbar />
-      <main className="flex-grow w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="flex-grow w-full max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="page-header">
           <h1 className="page-title">Jiajia</h1>
           <p className="page-subtitle">
