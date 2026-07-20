@@ -35,7 +35,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    fetch('https://messageboard-anniwang.anniwang44.workers.dev/')
+    fetch('https://messageboard-anniwang.anniwang.workers.dev/')
       .then((res) => res.json())
       .then((data) => {
         if (!data.messages?.length) return;
