@@ -74,7 +74,7 @@ export default function Home() {
             <a href="https://www.cloudflare.com/" target="_blank" rel="noreferrer">
               Cloudflare
             </a>
-            . Waterloo &apos;24.
+            . Waterloo.
           </p>
         </header>
 

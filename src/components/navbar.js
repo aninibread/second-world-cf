@@ -7,7 +7,7 @@ const Navbar = () => {
         <img
           src="https://pub-4b3c8e02204249afb15ca13b88ec64ef.r2.dev/nav-logo.png"
           alt="Home"
-          className="w-full h-full"
+          className="w-full h-full nav-logo"
         />
       </Link>
       <nav className="nav">

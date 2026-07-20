@@ -50,6 +50,20 @@ a:hover {
 }
 
 /* Navbar */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.nav-logo {
+  animation: spin-slow 8s linear infinite;
+  transform-origin: center;
+}
+
+.nav-logo:hover {
+  animation-duration: 2s;
+}
+
 .nav {
   display: flex;
   gap: 1.25rem;
@@ -334,11 +348,28 @@ a:hover {
 
 /* Board */
 .board-form {
-  background: linear-gradient(135deg, #faf9f7 0%, #f3f1ee 100%);
+  position: relative;
+  background: #f9f7f1;
   border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 1.25rem 1.35rem;
-  margin-bottom: 2rem;
+  border-radius: 4px;
+  padding: 2rem 1.35rem 1.35rem;
+  margin-bottom: 2.5rem;
+  margin-top: 1rem;
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.board-form::before {
+  content: '';
+  position: absolute;
+  top: -0.7rem;
+  left: 50%;
+  transform: translateX(-50%) rotate(1deg);
+  width: 42%;
+  height: 1.5rem;
+  background: rgba(114, 175, 143, 0.72);
+  border-radius: 2px;
+  z-index: 2;
+  mix-blend-mode: multiply;
 }
 
 .board-field {
@@ -367,7 +398,7 @@ a:hover {
   color: var(--color-text);
   background: #fff;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 4px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   box-sizing: border-box;
 }
@@ -452,21 +483,68 @@ a:hover {
 .board-messages {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
+  column-gap: 1.25rem;
+  row-gap: 2rem;
   align-items: start;
+  padding-top: 1rem;
 }
 
 .board-message {
+  position: relative;
   padding: 1.1rem 1.25rem;
-  background: var(--color-surface);
+  background: #f9f7f1;
   border: 1px solid var(--color-border);
-  border-radius: 12px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 4px;
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* washi tape — common properties */
+.board-message::before {
+  content: '';
+  position: absolute;
+  top: -0.7rem;
+  width: 46%;
+  height: 1.5rem;
+  border-radius: 2px;
+  z-index: 2;
+  mix-blend-mode: multiply;
+}
+
+/* washi tape — per-note color and position */
+.board-message:nth-child(4n + 1)::before {
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  background: rgba(114, 175, 143, 0.72);
+}
+
+.board-message:nth-child(4n + 2)::before {
+  left: 50%;
+  transform: translateX(-50%) rotate(1.5deg);
+  background: rgba(174, 158, 210, 0.72);
+}
+
+.board-message:nth-child(4n + 3)::before {
+  left: 50%;
+  transform: translateX(-50%) rotate(-1deg);
+  background: rgba(228, 162, 162, 0.72);
+}
+
+.board-message:nth-child(4n + 4)::before {
+  left: 50%;
+  transform: translateX(-50%) rotate(2deg);
+  background: rgba(128, 178, 218, 0.72);
+}
+
+.board-message:nth-child(4n + 1) { transform: rotate(-0.5deg); }
+.board-message:nth-child(4n + 2) { transform: rotate(0.4deg); }
+.board-message:nth-child(4n + 3) { transform: rotate(0.7deg); }
+.board-message:nth-child(4n + 4) { transform: rotate(-0.4deg); }
+
 .board-message:hover {
-  border-color: #d4ddd8;
-  box-shadow: 0 4px 16px rgba(6, 79, 57, 0.05);
+  transform: rotate(0deg) translateY(-3px);
+  box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.14);
+  z-index: 1;
 }
 
 .board-message-header {
@@ -514,6 +592,7 @@ a:hover {
 }
 
 .board-empty {
+  grid-column: span 2;
   text-align: center;
   padding: 2.5rem 1rem;
   font-size: 0.9rem;
