@@ -39,13 +39,10 @@ export default function Home() {
       .then((res) => res.json())
       .then((data) => {
         if (!data.messages?.length) return;
-        const sorted = [...data.messages].sort(
-          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-        );
-        const latest = sorted[0];
+        const msg = data.messages[Math.floor(Math.random() * data.messages.length)];
         setLatestMessage({
-          name: latest.name,
-          text: latest.text.length > 72 ? `${latest.text.slice(0, 72)}…` : latest.text,
+          name: msg.name,
+          text: msg.text.length > 55 ? `${msg.text.slice(0, 55)}…` : msg.text,
         });
       })
       .catch(() => {});

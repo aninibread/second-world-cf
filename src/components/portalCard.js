@@ -16,13 +16,6 @@ export default function PortalCard({
           <span className="portal-card-subtitle">{subtitle}</span>
         </div>
 
-        {variant === 'board' && preview && (
-          <p className="portal-card-preview">
-            <span className="portal-card-preview-quote">&ldquo;{preview.text}&rdquo;</span>
-            <span className="portal-card-preview-author">— {preview.name}</span>
-          </p>
-        )}
-
         <span className="portal-card-arrow" aria-hidden="true">
           →
         </span>
@@ -31,6 +24,13 @@ export default function PortalCard({
       {variant === 'cat' && imageUrl && (
         <div className="portal-card-visual">
           <img src={imageUrl} alt="" className="portal-card-image" />
+        </div>
+      )}
+
+      {variant === 'board' && preview && (
+        <div className="portal-card-note" aria-hidden="true">
+          <p className="portal-card-note-text">{preview.text}</p>
+          <span className="portal-card-note-author">— {preview.name}</span>
         </div>
       )}
     </Link>
