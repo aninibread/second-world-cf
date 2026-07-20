@@ -42,9 +42,12 @@ export default function Cat() {
       </Head>
       <Navbar />
       <main className="flex-grow w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl font-bold mb-6">🐱 cat gallery</h1>
-      <p>This is my kitty cat. Her name is Jiajia and she is turning 3 y/o (2024). Her name Jiajia or 佳佳 is a common Chinese name character that shares the same sound with the word 家 meaning 'Home'. </p>
-      <br/>
+        <header className="page-header">
+          <h1 className="page-title">Jiajia</h1>
+          <p className="page-subtitle">
+            My cat. Her name 佳佳 shares a sound with 家 — home.
+          </p>
+        </header>
         <div className={galleryStyles.masonryGrid}>
               {catImageKeys && catImageKeys.map((imageKey, index) => (
                 <div key={index} className={galleryStyles.masonryGridItem}>
@@ -60,10 +63,6 @@ export default function Cat() {
                     </figure>
                 </div>
             ))}
-        </div>
-        <br/>
-        <div className="bounce-link-container">
-          <a href="/writing" className="bounce-link">see: my writing! 🖋️</a>
         </div>
       </main>
       <Footer />

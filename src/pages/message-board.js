@@ -3,6 +3,16 @@ import Head from 'next/head';
 import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 
+function formatTimestamp(timestamp) {
+  return new Date(timestamp).toLocaleDateString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+}
+
 const MessageBoard = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
@@ -11,6 +21,7 @@ const MessageBoard = () => {
   const [error, setError] = useState('');
   const [userIp, setUserIp] = useState('');
   const [originalMessage, setOriginalMessage] = useState({ name: '', text: '' });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchMessages();
@@ -24,16 +35,16 @@ const MessageBoard = () => {
       if (contentType && contentType.indexOf('application/json') !== -1) {
         const data = await response.json();
         if (data.messages) {
-          const sortedMessages = data.messages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+          const sortedMessages = data.messages.sort(
+            (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+          );
           setMessages(sortedMessages);
-        } else {
-          console.error('Error: Messages property is missing in response data:', data);
         }
-      } else {
-        console.error('Error: Received non-JSON response:', response);
       }
-    } catch (error) {
-      console.error('Error fetching messages:', error);
+    } catch (err) {
+      console.error('Error fetching messages:', err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -41,58 +52,57 @@ const MessageBoard = () => {
     try {
       const response = await fetch('https://api64.ipify.org?format=json');
       const data = await response.json();
-      console.log("User IP:", data.ip); // Debugging log for IP
       setUserIp(data.ip);
-    } catch (error) {
-      console.error('Error fetching user IP:', error);
+    } catch (err) {
+      console.error('Error fetching user IP:', err);
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (userName.trim().length < 1 || newMessage.trim().length < 1) {
-      setError('Both name and message must be at least 1 character long.');
+      setError('Name and message are required.');
       return;
     }
 
-    if (editingMessageId && userName === originalMessage.name && newMessage === originalMessage.text) {
-      setError('Nothing has been updated. Click cancel to return to posting.');
+    if (
+      editingMessageId &&
+      userName === originalMessage.name &&
+      newMessage === originalMessage.text
+    ) {
+      setError('No changes to save.');
       return;
     }
 
-    const url = `https://messageboard-anniwang.anniwang.workers.dev/`;
     const message = {
       id: editingMessageId || new Date().toISOString(),
       name: userName,
       text: newMessage,
       timestamp: new Date().toISOString(),
-      ip: userIp // Include IP address when submitting the message
+      ip: userIp,
     };
-    const payload = {
-      messages: [message]
-    };
-    const method = 'PUT';
 
     try {
-      await fetch(url, {
-        method,
+      await fetch('https://messageboard-anniwang.anniwang.workers.dev/', {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ messages: [message] }),
       });
       setNewMessage('');
       setUserName('');
       setEditingMessageId(null);
       setError('');
 
-      // Update messages state to include the new message
-      setMessages(prevMessages => {
+      setMessages((prevMessages) => {
         const updatedMessages = editingMessageId
-          ? prevMessages.map(msg => (msg.id === message.id ? message : msg))
+          ? prevMessages.map((msg) => (msg.id === message.id ? message : msg))
           : [message, ...prevMessages];
-        return updatedMessages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        return updatedMessages.sort(
+          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        );
       });
-    } catch (error) {
-      console.error(`Error ${editingMessageId ? 'updating' : 'posting'} message:`, error);
+    } catch (err) {
+      console.error(`Error ${editingMessageId ? 'updating' : 'posting'} message:`, err);
     }
   };
 
@@ -101,6 +111,7 @@ const MessageBoard = () => {
     setUserName(name);
     setNewMessage(text);
     setOriginalMessage({ name, text });
+    setError('');
   };
 
   const handleCancel = () => {
@@ -113,82 +124,90 @@ const MessageBoard = () => {
   return (
     <div className="flex flex-col min-h-screen pt-10">
       <Head>
-        <title>Message Board</title>
-        <meta name="title" content="Message Board" />
+        <title>Board</title>
+        <meta name="title" content="Board" />
         <link rel="icon" href="https://pub-4b3c8e02204249afb15ca13b88ec64ef.r2.dev/nav-logo.png" />
       </Head>
       <Navbar />
-      <main className="flex-grow w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold mb-6 my-4">message board 💬</h1>
-        <p>Come say hi or leave a message!</p>
-        <br/>
-        {error && <p className="text-red-500">{error}</p>}
-        <form onSubmit={handleSubmit} className="mb-4 relative">
-          <div className="relative">
+      <main className="flex-grow w-full max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <header className="page-header">
+          <h1 className="page-title">Board</h1>
+          <p className="page-subtitle">Say hi or leave a note.</p>
+        </header>
+
+        <form onSubmit={handleSubmit} className="board-form">
+          <div className="board-field">
+            <label htmlFor="board-name" className="board-label">
+              name
+            </label>
             <input
+              id="board-name"
               type="text"
               value={userName}
               onChange={(e) => setUserName(e.target.value.slice(0, 30))}
-              placeholder="Your Name"
-              className="w-full p-2 border rounded mb-2 relative"
+              placeholder="your name"
+              className="board-input"
             />
-            <div className="absolute right-2 top-2 text-sm text-gray-500">{userName.length}/30</div>
+            <span className="board-counter">{userName.length}/30</span>
           </div>
-          <div className="relative">
+
+          <div className="board-field">
+            <label htmlFor="board-message" className="board-label">
+              message
+            </label>
             <textarea
+              id="board-message"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value.slice(0, 280))}
-              className="w-full p-2 border rounded"
+              className="board-textarea"
               rows="4"
-              placeholder="Your Message"
+              placeholder="what's on your mind?"
             />
-            <div className="absolute right-2 bottom-2 text-sm text-gray-500">{newMessage.length}/280</div>
+            <span className="board-counter">{newMessage.length}/280</span>
           </div>
-          <div className="flex items-center mt-2">
-            <button
-              type="submit"
-              className={`px-4 py-2 text-white rounded ${editingMessageId ? 'bg-green-700' : 'bg-blue-500'}`}
-            >
-              {editingMessageId ? 'Update Message' : 'Post Message'}
+
+          {error && <p className="board-error">{error}</p>}
+
+          <div className="board-actions">
+            <button type="submit" className="board-submit">
+              {editingMessageId ? 'save' : 'post'}
             </button>
             {editingMessageId && (
-              <button
-                type="button"
-                onClick={handleCancel}
-                className="ml-4 text-blue-500 underline"
-              >
-                Cancel
+              <button type="button" onClick={handleCancel} className="board-cancel">
+                cancel
               </button>
             )}
           </div>
         </form>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {messages.map((message, index) => (
-            <div key={index} className="flex justify-start">
-              <div className="w-full rounded-lg bg-gray-100 p-3 shadow-md flex flex-col justify-between">
-                <div>
-                  <div className="flex justify-between items-center">
-                    <strong>{message.name}</strong>
-                    {message.ip === userIp ? (
-                      <button
-                        onClick={() => handleEdit(message.id, message.name, message.text)}
-                        className="ml-2 px-2 py-1 bg-yellow-500 text-white rounded text-xs"
-                      >
-                        Edit
-                      </button>
-                    ) : (
-                      console.log("IP mismatch: message IP -", message.ip, "user IP -", userIp) // Debugging log for IP mismatch
-                    )}
-                  </div>
-                  <p className="mt-1">{message.text}</p>
+
+        <section className="board-messages">
+          {isLoading ? (
+            <p className="board-empty">loading…</p>
+          ) : messages.length === 0 ? (
+            <p className="board-empty">no messages yet — be the first.</p>
+          ) : (
+            messages.map((message) => (
+              <article key={message.id} className="board-message">
+                <div className="board-message-header">
+                  <span className="board-message-name">{message.name}</span>
+                  {message.ip === userIp && (
+                    <button
+                      type="button"
+                      onClick={() => handleEdit(message.id, message.name, message.text)}
+                      className="board-edit"
+                    >
+                      edit
+                    </button>
+                  )}
                 </div>
-                <div className="text-right mt-2">
-                  <small className="text-gray-500">{new Date(message.timestamp).toLocaleString()}</small>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+                <p className="board-message-text">{message.text}</p>
+                <time className="board-message-time" dateTime={message.timestamp}>
+                  {formatTimestamp(message.timestamp)}
+                </time>
+              </article>
+            ))
+          )}
+        </section>
       </main>
       <Footer />
     </div>
