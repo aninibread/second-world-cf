@@ -1,41 +1,51 @@
-export const runtime = 'edge';
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
-// Simple UUID v4 function compatible with Edge
 function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }
 
-export default async function handler(req) {
+export default async function handler(req, res) {
+  const { env } = await getCloudflareContext({ async: true });
+  const { MESSAGES } = env;
+
+  if (!MESSAGES) {
+    return res.status(500).json({ message: "MESSAGES KV namespace not configured" });
+  }
+
   const { method } = req;
 
-  if (method === 'POST') {
-    const { name, text } = await req.json();
+  if (method === "POST") {
+    const { name, text } = req.body;
     const timestamp = new Date().toISOString();
     const id = uuidv4();
     const newMessage = { id, name, text, timestamp };
     await MESSAGES.put(id, JSON.stringify(newMessage));
-    return new Response(JSON.stringify({ message: 'Message saved' }), { status: 201, headers: { 'Content-Type': 'application/json' } });
-  } else if (method === 'GET') {
+    return res.status(201).json({ message: "Message saved" });
+  }
+
+  if (method === "GET") {
     const messages = await MESSAGES.list();
-    const messageDetails = await Promise.all(messages.keys.map(async key => {
-      const message = await MESSAGES.get(key.name, 'json');
-      return message;
-    }));
-    return new Response(JSON.stringify({ messages: messageDetails }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-  } else if (method === 'PUT') {
-    const { id, name, text } = await req.json();
-    const message = await MESSAGES.get(id, 'json');
+    const messageDetails = await Promise.all(
+      messages.keys.map(async (key) => MESSAGES.get(key.name, "json"))
+    );
+    return res.status(200).json({ messages: messageDetails });
+  }
+
+  if (method === "PUT") {
+    const { id, name, text } = req.body;
+    const message = await MESSAGES.get(id, "json");
     if (message) {
       const updatedMessage = { id, name, text, timestamp: new Date().toISOString() };
       await MESSAGES.put(id, JSON.stringify(updatedMessage));
-      return new Response(JSON.stringify({ message: 'Message updated' }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-    } else {
-      return new Response(JSON.stringify({ message: 'Message not found' }), { status: 404, headers: { 'Content-Type': 'application/json' } });
+      return res.status(200).json({ message: "Message updated" });
     }
-  } else {
-    return new Response(`Method ${method} Not Allowed`, { status: 405, headers: { 'Allow': 'GET, POST, PUT' } });
+    return res.status(404).json({ message: "Message not found" });
   }
+
+  res.setHeader("Allow", "GET, POST, PUT");
+  return res.status(405).json({ message: `Method ${method} Not Allowed` });
 }

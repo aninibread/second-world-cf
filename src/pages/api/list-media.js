@@ -1,22 +1,28 @@
-
-export const runtime = 'edge';
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 async function getCatImageKeys() {
-
-  const catR2Bucket = process.env.CAT_R2_BUCKET;
+  const { env } = await getCloudflareContext({ async: true });
+  const catR2Bucket = env.CAT_R2_BUCKET;
 
   if (!catR2Bucket) {
-    return res.status(500).json({ message: 'R2 Bucket not configured' });
+    throw new Error("R2 Bucket not configured");
   }
 
   const catImageKeys = await catR2Bucket.list();
 
-  return catImageKeys.objects.map(({ key }) => {
-    return key;
-  });
-
+  return catImageKeys.objects.map(({ key }) => key);
 }
 
-export default async function GET() {
-	return Response.json({ imageKeys: await getCatImageKeys() });
+export default async function handler(req, res) {
+  if (req.method !== "GET") {
+    return res.status(405).json({ message: "Method not allowed" });
+  }
+
+  try {
+    const imageKeys = await getCatImageKeys();
+    return res.status(200).json({ imageKeys });
+  } catch (error) {
+    console.error("Error listing cat media:", error);
+    return res.status(500).json({ message: "Failed to list cat media" });
+  }
 }

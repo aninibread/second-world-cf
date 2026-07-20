@@ -7,18 +7,18 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "pages:build": "npx @cloudflare/next-on-pages",
-    "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static",
-    "pages:watch": "npx @cloudflare/next-on-pages --watch",
-    "pages:dev": "npx wrangler pages dev .vercel/output/static --compatibility-date=2023-12-18 --compatibility-flag=nodejs_compat"
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.490.0",
     "@aws-sdk/s3-request-presigner": "^3.490.0",
     "@headlessui/react": "^2.1.2",
+    "@opennextjs/cloudflare": "1.15.1",
     "axios": "^1.7.2",
     "gray-matter": "^4.0.3",
-    "next": "14.0.4",
+    "next": "14.2.35",
     "react": "^18",
     "react-dom": "^18",
     "remark": "^15.0.1",
@@ -26,11 +26,10 @@
     "remark-html": "^16.0.1"
   },
   "devDependencies": {
-    "@cloudflare/next-on-pages": "^1.8.5",
-    "@cloudflare/workers-types": "^4.20231218.0",
+    "@cloudflare/workers-types": "^5.20260714.1",
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
-    "vercel": "^33.1.0"
+    "wrangler": "^4.59.2"
   }
 }
